@@ -1,0 +1,13 @@
+package cl.curso.atenciones_service;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class AtencionesServiceApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(AtencionesServiceApplication.class, args);
+	}
+
+}
