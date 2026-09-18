@@ -11,9 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
@@ -27,42 +25,38 @@ public class MedicalConsultation {
 
     @Column(name = "CONSULTATION_DATE", nullable = false)
     @NotNull(message = "La fecha de atención es obligatoria")
-    @PastOrPresent(message = "La fecha de atención no puede estar en el futuro")
     private LocalDate dateMedicalConsultation;
 
     @Column(name = "PROFESSIONAL_RUT", nullable = false, length = 12)
     @NotBlank(message = "El RUT del profesional es obligatorio")
-    @Pattern(regexp = "^\\d{1,2}\\.\\d{3}\\.\\d{3}-[0-9Kk]$", message = "El RUT debe tener el formato 12.345.678-9")
+    @Pattern(
+        regexp = "^\\d{1,2}\\.\\d{3}\\.\\d{3}-[0-9Kk]$",
+        message = "El RUT debe tener el formato 12.345.678-9"
+    )
     private String professionalRut;
 
     @Column(name = "PROFESSIONAL_NAME", nullable = false, length = 100)
     @NotBlank(message = "El nombre del profesional es obligatorio")
-    @Size(max = 100, message = "El nombre no puede superar 100 caracteres")
     private String professionalName;
 
     @Column(name = "PROFESSIONAL_LAST_NAME", nullable = false, length = 100)
     @NotBlank(message = "El apellido del profesional es obligatorio")
-    @Size(max = 100, message = "El apellido no puede superar 100 caracteres")
     private String professionalLastName;
 
     @Column(name = "PROFESSIONAL_SPECIALTY", nullable = false, length = 100)
     @NotBlank(message = "La especialidad es obligatoria")
-    @Size(max = 100, message = "La especialidad no puede superar 100 caracteres")
     private String professionalSpecialty;
 
     @Column(name = "CONSULTATION_REASON", nullable = false, length = 500)
     @NotBlank(message = "El motivo de la consulta es obligatorio")
-    @Size(max = 500, message = "El motivo no puede superar 500 caracteres")
     private String reasonMedicalConsultation;
 
     @Column(name = "DIAGNOSIS", nullable = false, length = 1000)
     @NotBlank(message = "El diagnóstico es obligatorio")
-    @Size(max = 1000, message = "El diagnóstico no puede superar 1000 caracteres")
     private String diagnosis;
 
     @Column(name = "TREATMENT", nullable = false, length = 1000)
     @NotBlank(message = "El tratamiento es obligatorio")
-    @Size(max = 1000, message = "El tratamiento no puede superar 1000 caracteres")
     private String treatment;
 
     @JsonBackReference("patient-consultations")
