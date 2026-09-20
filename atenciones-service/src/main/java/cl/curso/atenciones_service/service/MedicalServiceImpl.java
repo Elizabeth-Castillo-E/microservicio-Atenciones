@@ -37,30 +37,55 @@ public class MedicalServiceImpl implements MedicalService {
     @Override public void deletePatient(Long id) { patientRepository.delete(requirePatient(id)); }
 
     @Override public List<MedicalHistory> getAllMedicalHistories() { return historyRepository.findAll(); }
+    @Override public List<MedicalHistory> getMedicalHistoriesByPatientId(Long patientId) {
+        requirePatient(patientId);
+        return historyRepository.findAllByPatient_IdPatient(patientId);
+    }
     @Override public Optional<MedicalHistory> getMedicalHistoryById(Long id) { return historyRepository.findById(id); }
-    @Override public Optional<MedicalHistory> getMedicalHistoryByPatientId(Long patientId) { return historyRepository.findByPatient_IdPatient(patientId); }
     @Override public MedicalHistory saveMedicalHistory(Long patientId, MedicalHistory history) {
         Patient patient = requirePatient(patientId);
-        if (historyRepository.findByPatient_IdPatient(patientId).isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "El paciente ya tiene una historia clínica registrada");
-        }
         history.setPatient(patient);
         return historyRepository.save(history);
     }
     @Override public MedicalHistory updateMedicalHistory(Long id, MedicalHistory incoming) {
         MedicalHistory current = requireHistory(id);
+        copyMedicalHistoryFields(current, incoming);
+        return historyRepository.save(current);
+    }
+    @Override public MedicalHistory updateMedicalHistory(Long patientId, Long historyId, MedicalHistory incoming) {
+        requirePatient(patientId);
+        MedicalHistory current = requireHistory(historyId);
+        if (!current.getPatient().getIdPatient().equals(patientId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                "El historial " + historyId + " no pertenece al paciente " + patientId);
+        }
+        copyMedicalHistoryFields(current, incoming);
+        return historyRepository.save(current);
+    }
+    private void copyMedicalHistoryFields(MedicalHistory current, MedicalHistory incoming) {
         current.setBloodType(incoming.getBloodType());
         current.setAllergies(incoming.getAllergies());
         current.setChronicConditions(incoming.getChronicConditions());
-        return historyRepository.save(current);
     }
     @Override public void deleteMedicalHistory(Long id) { historyRepository.delete(requireHistory(id)); }
+    @Override public void deleteMedicalHistory(Long patientId, Long historyId) {
+        requirePatient(patientId);
+        MedicalHistory history = requireHistory(historyId);
+        if (!history.getPatient().getIdPatient().equals(patientId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                "El historial " + historyId + " no pertenece al paciente " + patientId);
+        }
+        historyRepository.delete(history);
+    }
 
     @Override public List<MedicalConsultation> getAllMedicalConsultations() { return consultationRepository.findAll(); }
-    @Override public Optional<MedicalConsultation> getMedicalConsultationById(Long id) { return consultationRepository.findById(id); }
     @Override public List<MedicalConsultation> getMedicalConsultationsByPatientId(Long patientId) {
         requirePatient(patientId);
         return consultationRepository.findAllByPatient_IdPatient(patientId);
+    }
+    @Override public Optional<MedicalConsultation> getMedicalConsultationById(Long id) { return consultationRepository.findById(id); }
+    @Override public MedicalConsultation getMedicalConsultationByPatientId(Long patientId, Long consultationId) {
+        return requireConsultationForPatient(patientId, consultationId);
     }
     @Override public MedicalConsultation saveMedicalConsultation(Long patientId, MedicalConsultation consultation) {
         consultation.setPatient(requirePatient(patientId));
@@ -68,6 +93,16 @@ public class MedicalServiceImpl implements MedicalService {
     }
     @Override public MedicalConsultation updateMedicalConsultation(Long id, MedicalConsultation incoming) {
         MedicalConsultation current = requireConsultation(id);
+        copyMedicalConsultationFields(current, incoming);
+        return consultationRepository.save(current);
+    }
+    @Override public MedicalConsultation updateMedicalConsultation(
+            Long patientId, Long consultationId, MedicalConsultation incoming) {
+        MedicalConsultation current = requireConsultationForPatient(patientId, consultationId);
+        copyMedicalConsultationFields(current, incoming);
+        return consultationRepository.save(current);
+    }
+    private void copyMedicalConsultationFields(MedicalConsultation current, MedicalConsultation incoming) {
         current.setDateMedicalConsultation(incoming.getDateMedicalConsultation());
         current.setProfessionalRut(incoming.getProfessionalRut());
         current.setProfessionalName(incoming.getProfessionalName());
@@ -76,15 +111,26 @@ public class MedicalServiceImpl implements MedicalService {
         current.setReasonMedicalConsultation(incoming.getReasonMedicalConsultation());
         current.setDiagnosis(incoming.getDiagnosis());
         current.setTreatment(incoming.getTreatment());
-        return consultationRepository.save(current);
     }
     @Override public void deleteMedicalConsultation(Long id) { consultationRepository.delete(requireConsultation(id)); }
+    @Override public void deleteMedicalConsultation(Long patientId, Long consultationId) {
+        consultationRepository.delete(requireConsultationForPatient(patientId, consultationId));
+    }
 
     private Patient requirePatient(Long id) { return patientRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Paciente no encontrado: " + id)); }
     private MedicalHistory requireHistory(Long id) { return historyRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Historia clínica no encontrada: " + id)); }
     private MedicalConsultation requireConsultation(Long id) { return consultationRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Consulta médica no encontrada: " + id)); }
+    private MedicalConsultation requireConsultationForPatient(Long patientId, Long consultationId) {
+        requirePatient(patientId);
+        MedicalConsultation consultation = requireConsultation(consultationId);
+        if (!consultation.getPatient().getIdPatient().equals(patientId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                "La consulta " + consultationId + " no pertenece al paciente " + patientId);
+        }
+        return consultation;
+    }
     private void linkPatientRelations(Patient patient) {
-        if (patient.getMedicalHistory() != null) patient.getMedicalHistory().setPatient(patient);
+        patient.getMedicalHistories().forEach(history -> history.setPatient(patient));
         patient.getMedicalConsultations().forEach(consultation -> consultation.setPatient(patient));
     }
     private void copyPatientFields(Patient current, Patient incoming) {

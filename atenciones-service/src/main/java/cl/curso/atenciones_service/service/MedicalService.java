@@ -15,16 +15,21 @@ public interface MedicalService {
     void deletePatient(Long id);
 
     List<MedicalHistory> getAllMedicalHistories();
+    List<MedicalHistory> getMedicalHistoriesByPatientId(Long patientId);
     Optional<MedicalHistory> getMedicalHistoryById(Long id);
-    Optional<MedicalHistory> getMedicalHistoryByPatientId(Long patientId);
     MedicalHistory saveMedicalHistory(Long patientId, MedicalHistory history);
     MedicalHistory updateMedicalHistory(Long id, MedicalHistory history);
+    MedicalHistory updateMedicalHistory(Long patientId, Long historyId, MedicalHistory history);
     void deleteMedicalHistory(Long id);
+    void deleteMedicalHistory(Long patientId, Long historyId);
 
     List<MedicalConsultation> getAllMedicalConsultations();
-    Optional<MedicalConsultation> getMedicalConsultationById(Long id);
     List<MedicalConsultation> getMedicalConsultationsByPatientId(Long patientId);
+    Optional<MedicalConsultation> getMedicalConsultationById(Long id);
+    MedicalConsultation getMedicalConsultationByPatientId(Long patientId, Long consultationId);
     MedicalConsultation saveMedicalConsultation(Long patientId, MedicalConsultation consultation);
     MedicalConsultation updateMedicalConsultation(Long id, MedicalConsultation consultation);
+    MedicalConsultation updateMedicalConsultation(Long patientId, Long consultationId, MedicalConsultation consultation);
     void deleteMedicalConsultation(Long id);
+    void deleteMedicalConsultation(Long patientId, Long consultationId);
 }

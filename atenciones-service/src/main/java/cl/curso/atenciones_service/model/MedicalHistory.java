@@ -9,11 +9,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,24 +26,21 @@ public class MedicalHistory {
 
     @Column(name = "BLOOD_TYPE", nullable = false, length = 3)
     @NotBlank(message = "El grupo sanguíneo es obligatorio")
-    @Pattern(regexp = "^(A|B|AB|O)[+-]$", flags = Pattern.Flag.CASE_INSENSITIVE, message = "El grupo sanguíneo debe tener formato O+, A-, AB+, etc.")
     private String bloodType;
 
     @ElementCollection
     @CollectionTable(name = "MEDICAL_HISTORY_ALLERGIES", joinColumns = @JoinColumn(name = "MEDICAL_HISTORY_ID"))
     @Column(name = "ALLERGY", length = 150)
-    @Size(max = 20, message = "No puede registrar más de 20 alergias")
     private List<String> allergies = new ArrayList<>();
 
     @ElementCollection
     @CollectionTable(name = "MEDICAL_HISTORY_CONDITIONS", joinColumns = @JoinColumn(name = "MEDICAL_HISTORY_ID"))
     @Column(name = "CHRONIC_CONDITION", length = 150)
-    @Size(max = 20, message = "No puede registrar más de 20 enfermedades crónicas")
     private List<String> chronicConditions = new ArrayList<>();
 
-    @JsonBackReference("patient-history")
-    @OneToOne
-    @JoinColumn(name = "PATIENT_ID", nullable = false, unique = true)
+    @JsonBackReference("patient-histories")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "PATIENT_ID", nullable = false)
     private Patient patient;
 
     protected MedicalHistory() { }
