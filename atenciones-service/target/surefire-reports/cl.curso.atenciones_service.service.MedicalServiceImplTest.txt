@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: cl.curso.atenciones_service.service.MedicalServiceImplTest
 -------------------------------------------------------------------------------
-Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.619 s -- in cl.curso.atenciones_service.service.MedicalServiceImplTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.526 s -- in cl.curso.atenciones_service.service.MedicalServiceImplTest

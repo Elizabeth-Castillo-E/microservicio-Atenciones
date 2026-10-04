@@ -9,8 +9,9 @@ services:
       - "8081:8081"
 
     environment:
-      SPRING.DATASOURCE.URL= "jdbc:oracle:thin:@e2zmyh5tedwodp39_tp?TNS_ADMIN=/app/Wallet"
-      SPRING.DATASOURCE.USERNAME= "FS12026"
-      SPRING.DATASOURCE.PASSWORD= "ClaseFullStack1-"
+      SPRING_DATASOURCE_URL: "jdbc:oracle:thin:@e2zmyh5tedwodp39_tp?TNS_ADMIN=/app/Wallet"
+      SPRING_DATASOURCE_USERNAME: "FS12026"
+      SPRING_DATASOURCE_PASSWORD: "ClaseFullStack1-"
+      
      
     restart: always
