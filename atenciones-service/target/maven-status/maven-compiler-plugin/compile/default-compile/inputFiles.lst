@@ -1,0 +1,10 @@
+C:\ProyectosDuoc\microservicios\DFS1\atenciones-service\atenciones-service\src\main\java\cl\curso\atenciones_service\AtencionesServiceApplication.java
+C:\ProyectosDuoc\microservicios\DFS1\atenciones-service\atenciones-service\src\main\java\cl\curso\atenciones_service\controller\ControllerMedicalConsultation.java
+C:\ProyectosDuoc\microservicios\DFS1\atenciones-service\atenciones-service\src\main\java\cl\curso\atenciones_service\model\MedicalConsultation.java
+C:\ProyectosDuoc\microservicios\DFS1\atenciones-service\atenciones-service\src\main\java\cl\curso\atenciones_service\model\MedicalHistory.java
+C:\ProyectosDuoc\microservicios\DFS1\atenciones-service\atenciones-service\src\main\java\cl\curso\atenciones_service\model\Patient.java
+C:\ProyectosDuoc\microservicios\DFS1\atenciones-service\atenciones-service\src\main\java\cl\curso\atenciones_service\repository\MedicalConsultationRepository.java
+C:\ProyectosDuoc\microservicios\DFS1\atenciones-service\atenciones-service\src\main\java\cl\curso\atenciones_service\repository\MedicalHistoryRepository.java
+C:\ProyectosDuoc\microservicios\DFS1\atenciones-service\atenciones-service\src\main\java\cl\curso\atenciones_service\repository\PatientRepository.java
+C:\ProyectosDuoc\microservicios\DFS1\atenciones-service\atenciones-service\src\main\java\cl\curso\atenciones_service\service\MedicalService.java
+C:\ProyectosDuoc\microservicios\DFS1\atenciones-service\atenciones-service\src\main\java\cl\curso\atenciones_service\service\MedicalServiceImpl.java

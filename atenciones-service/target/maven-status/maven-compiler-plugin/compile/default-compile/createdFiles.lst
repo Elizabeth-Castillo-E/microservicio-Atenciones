@@ -1,0 +1,10 @@
+cl\curso\atenciones_service\repository\MedicalHistoryRepository.class
+cl\curso\atenciones_service\repository\MedicalConsultationRepository.class
+cl\curso\atenciones_service\AtencionesServiceApplication.class
+cl\curso\atenciones_service\model\MedicalHistory.class
+cl\curso\atenciones_service\repository\PatientRepository.class
+cl\curso\atenciones_service\service\MedicalServiceImpl.class
+cl\curso\atenciones_service\model\Patient.class
+cl\curso\atenciones_service\controller\ControllerMedicalConsultation.class
+cl\curso\atenciones_service\model\MedicalConsultation.class
+cl\curso\atenciones_service\service\MedicalService.class
